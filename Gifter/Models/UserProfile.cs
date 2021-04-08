@@ -21,5 +21,7 @@ namespace Gifter.Models
 
         public string Bio { get; set; }
 
+        public List<Post> Posts { get; set; }
+
     }
 }

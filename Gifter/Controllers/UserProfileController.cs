@@ -32,6 +32,13 @@ namespace Gifter.Controllers
             return Ok(_userProfileRepository.GetUserProfileById(id));
         }
 
+        [HttpGet("GetByIdWithPosts")]
+        public IActionResult GetByIdWithPosts(int id)
+        {
+            var profile = _userProfileRepository.GetUserProfileWithPosts(id);
+            return Ok(profile);
+        }
+
         [HttpPost]
         public IActionResult Post(UserProfile profile)
         {
@@ -57,5 +64,7 @@ namespace Gifter.Controllers
             _userProfileRepository.Delete(id);
             return NoContent();
         }
+
+
     }
 }
