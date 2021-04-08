@@ -76,5 +76,29 @@ namespace Gifter.Repositories
                 }
             }
         }
+
+        public void Add(UserProfile profile)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserProfile ([Name], Email, ImageUrl, Bio, DateCreated)
+                        OUTPUT inserted.Id
+                        VALUES (@Name, @Email, @ImageUrl, @Bio, @DateCreated)
+                    ";
+
+                    DbUtils.AddParameter(cmd, "@Name", profile.Name);
+                    DbUtils.AddParameter(cmd, "@Email", profile.Email);
+                    DbUtils.AddParameter(cmd, "@ImageUrl", profile.ImageUrl);
+                    DbUtils.AddParameter(cmd, "@Bio", profile.Bio);
+                    DbUtils.AddParameter(cmd, "@DateCreated", profile.DateCreated);
+
+                    profile.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }
