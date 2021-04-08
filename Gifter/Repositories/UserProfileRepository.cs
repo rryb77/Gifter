@@ -100,5 +100,48 @@ namespace Gifter.Repositories
                 }
             }
         }
+
+        public void Update(UserProfile profile)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    UPDATE UserProfile
+                    SET Name = @Name,
+                        Email = @Email,
+                        ImageUrl = @ImageUrl,
+                        Bio = @Bio,
+                        DateCreated = @DateCreated
+                    WHERE Id = @Id
+                    ";
+
+                    DbUtils.AddParameter(cmd, "Id", profile.Id);
+                    DbUtils.AddParameter(cmd, "@Name", profile.Name);
+                    DbUtils.AddParameter(cmd, "@Email", profile.Email);
+                    DbUtils.AddParameter(cmd, "@ImageUrl", profile.ImageUrl);
+                    DbUtils.AddParameter(cmd, "@Bio", profile.Bio);
+                    DbUtils.AddParameter(cmd, "@DateCreated", profile.DateCreated);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand()) 
+                {
+                    cmd.CommandText = "DELETE FROM UserProfile WHERE Id = @Id";
+                    DbUtils.AddParameter(cmd, "@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
