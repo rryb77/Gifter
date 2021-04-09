@@ -123,7 +123,6 @@ namespace Gifter.Repositories
                     }
 
                     reader.Close();
-
                     return post;
                 }
             }
@@ -164,8 +163,7 @@ namespace Gifter.Repositories
                         {
                             post = NewPostFromReader(reader);
                             post.Comments = new List<Comment>();
-                        }
-                        
+                        }                        
 
                         if (DbUtils.IsNotDbNull(reader, "CommentId"))
                         {
@@ -178,13 +176,11 @@ namespace Gifter.Repositories
                             });
                         }
                     }
-
                     reader.Close();
                     return post;
                 }
             }
         }
-
         public void Add(Post post)
         {
             using (var conn = Connection)
@@ -207,7 +203,6 @@ namespace Gifter.Repositories
                 }
             }
         }
-
         public void Update(Post post)
         {
             using (var conn = Connection)
@@ -235,7 +230,6 @@ namespace Gifter.Repositories
                 }
             }
         }
-
         public void Delete(int id)
         {
             using (var conn = Connection)
@@ -285,9 +279,7 @@ namespace Gifter.Repositories
                     {
                         posts.Add(NewPostFromReader(reader));
                     }
-
                     reader.Close();
-
                     return posts;
                 }
             }
@@ -318,7 +310,6 @@ namespace Gifter.Repositories
                     {
                         sql += " ORDER BY p.DateCreated";
                     }
-
                     cmd.CommandText = sql;
                     DbUtils.AddParameter(cmd, "@Criterion", criterion);
                     var reader = cmd.ExecuteReader();
