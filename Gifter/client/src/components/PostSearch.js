@@ -10,7 +10,8 @@ export const PostSearch = () => {
                 className="input--wide"
                 id="searchbar"
                 onKeyUp={(event) => setSearchTerms(event.target.value)}
-                placeholder="Search for a Post... " />
+                placeholder="Search for a Post... " 
+        />
     )
 }
 
