@@ -86,7 +86,7 @@ namespace Gifter.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id AS ProfileId, up.Name, up.Email, up.ImageUrl, up.Bio, up.DateCreated,
-                               p.Id AS PostId, p.Title, p.ImageUrl AS PostImageUrl, p.Caption, p.UserProfileId AS PostUserProfileId, p.DateCreated AS PostDateCreated,
+                               p.Id AS PostId, p.Title, p.ImageUrl AS PostImageUrl, p.Caption, p.UserProfileId AS UserProfileId, p.DateCreated AS PostDateCreated,
                                c.Id AS CommentId, c.Message, c.UserProfileId AS CommentUserProfileId
                         FROM UserProfile up
                         LEFT JOIN Post p ON p.UserProfileId = up.Id
@@ -129,8 +129,16 @@ namespace Gifter.Repositories
                                     Caption = DbUtils.GetString(reader, "Caption"),
                                     DateCreated = DbUtils.GetDateTime(reader, "PostDateCreated"),
                                     ImageUrl = DbUtils.GetString(reader, "PostImageUrl"),
-                                    UserProfileId = DbUtils.GetInt(reader, "PostUserProfileId"),
-                                    UserProfile = new UserProfile(),
+                                    UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+                                    UserProfile = new UserProfile()
+                                    {
+                                        Id = id,
+                                        Name = DbUtils.GetString(reader, "Name"),
+                                        Email = DbUtils.GetString(reader, "Email"),
+                                        ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
+                                        Bio = DbUtils.GetString(reader, "Bio"),
+                                        DateCreated = DbUtils.GetDateTime(reader, "DateCreated"),
+                                    },
                                     Comments = new List<Comment>()
                                 });
                             }
