@@ -29,17 +29,21 @@ export const PostProvider = (props) => {
   }
 
   const getPostsWithComments = () => {
-    return fetch(`api/post/GetWithComments`)
+    return fetch(`/api/post/GetWithComments`)
       .then((res) => res.json())
       .then(setPosts)
   }
 
   const getPost = (id) => {
     return fetch(`/api/post/GetPostWithComments?id=${id}`).then((res) => res.json());
-};
+  };
+
+  const getUserPosts = (id) => {
+    return fetch(`/api/UserProfile/GetByIdWithPosts?id=${id}`).then((res) => res.json())
+  }
 
   return (
-    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost }}>
+    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost, getUserPosts }}>
       {props.children}
     </PostContext.Provider>
   );

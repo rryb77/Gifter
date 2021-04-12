@@ -2,7 +2,8 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
-import PostDetails from "./PostDetails"
+import PostDetails from "./PostDetails";
+import UserPosts from "./UsersPosts"
 
 const ApplicationViews = () => {
   return (
@@ -17,6 +18,10 @@ const ApplicationViews = () => {
 
       <Route path="/posts/:id">
           <PostDetails/>
+      </Route>
+
+      <Route path="/users/:id">
+        <UserPosts/>
       </Route>
     </Switch>
   );
