@@ -22,6 +22,17 @@ export const PostProvider = (props) => {
     });
   };
 
+  const updatePost = (post) => {
+    return fetch(`/api/post/${post.id}`, {
+      method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(post)
+    })
+      
+  }
+
   const searchPosts = (searchTerms) => {
     return fetch(`/api/post/search?q=${searchTerms}`)
       .then((res) => res.json())
@@ -43,7 +54,7 @@ export const PostProvider = (props) => {
   }
 
   return (
-    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost, getUserPosts }}>
+    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost, getUserPosts, updatePost }}>
       {props.children}
     </PostContext.Provider>
   );

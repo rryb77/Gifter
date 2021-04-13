@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Form,
   FormGroup,
@@ -9,32 +9,50 @@ import {
   Button,
 } from "reactstrap";
 import { PostContext } from "../providers/PostProvider";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 
-const PostForm = () => {
-  const { addPost } = useContext(PostContext);
+const PostEdit = () => {
+  const { updatePost, getPost} = useContext(PostContext);
   const [imageUrl, setImageUrl] = useState("");
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const { currentUserProfileId } = useContext(UserContext)
+  const { id } = useParams();
+  const [post, setPost] = useState({});
 
   // Use this hook to allow us to programatically redirect users
   const history = useHistory();
 
+  useEffect(() => {
+    getPost(id).then(setPost);
+  }, []);
+
+  useEffect(() => {
+    setImageUrl(post.imageUrl)
+    setTitle(post.title)
+    setCaption(post.caption)
+  }, [post]);
+
   const submit = (e) => {
-    const post = {
-      imageUrl,
-      title,
-      caption,
-      userProfileId: +currentUserProfileId,
+    const newPost = {
+      ...post
     };
 
-    addPost(post).then((p) => {
+    newPost.title = title
+    newPost.imageUrl = imageUrl
+    newPost.caption = caption
+
+    updatePost(newPost).then((p) => {
       // Navigate the user back to the home route
       history.push("/");
     });
   };
+
+  if(post === null || currentUserProfileId !== post.userProfileId)
+  {
+      return null
+  }
 
   return (
     <div className="container pt-4">
@@ -47,17 +65,19 @@ const PostForm = () => {
                 <Input
                   id="imageUrl"
                   onChange={(e) => setImageUrl(e.target.value)}
+                  value={imageUrl}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="title">Title</Label>
-                <Input id="title" onChange={(e) => setTitle(e.target.value)} />
+                <Input id="title" onChange={(e) => setTitle(e.target.value)} value={title}/>
               </FormGroup>
               <FormGroup>
                 <Label for="caption">Caption</Label>
                 <Input
                   id="caption"
                   onChange={(e) => setCaption(e.target.value)}
+                  value={caption}
                 />
               </FormGroup>
             </Form>
@@ -71,4 +91,4 @@ const PostForm = () => {
   );
 };
 
-export default PostForm;
+export default PostEdit;

@@ -3,7 +3,8 @@ import { Switch, Route } from "react-router-dom";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
 import PostDetails from "./PostDetails";
-import UserPosts from "./UsersPosts"
+import UserPosts from "./UsersPosts";
+import PostEdit from "./PostEdit";
 
 const ApplicationViews = () => {
   return (
@@ -16,6 +17,10 @@ const ApplicationViews = () => {
         <PostForm />
       </Route>
 
+      <Route path="/posts/edit/:id">
+        <PostEdit/>
+      </Route>
+
       <Route path="/posts/:id">
           <PostDetails/>
       </Route>
@@ -23,6 +28,8 @@ const ApplicationViews = () => {
       <Route path="/users/:id">
         <UserPosts/>
       </Route>
+
+      
     </Switch>
   );
 };

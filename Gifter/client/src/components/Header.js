@@ -1,7 +1,15 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../providers/UserProvider";
 
 const Header = () => {
+  
+  const { setCurrentUserProfileId } = useContext(UserContext)
+
+  var handlerChange = (e) => {
+      setCurrentUserProfileId(parseInt(e.target.value))
+  }
+
   return (
     <nav className="navbar navbar-expand navbar-dark bg-info">
       <Link to="/" className="navbar-brand">
@@ -19,6 +27,12 @@ const Header = () => {
           </Link>
         </li>
       </ul>
+
+      <select name="users" id="users" onChange={handlerChange}>
+        <option value="1">Oliver Hardy</option>
+        <option value="2">Stan Laurel</option>
+      </select>
+
     </nav>
   );
 };
