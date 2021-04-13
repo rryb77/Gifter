@@ -181,7 +181,7 @@ namespace Gifter.Repositories
                 }
             }
         }
-        public void Add(Post post)
+        public int Add(Post post)
         {
             using (var conn = Connection)
             {
@@ -199,7 +199,7 @@ namespace Gifter.Repositories
                     DbUtils.AddParameter(cmd, "@ImageUrl", post.ImageUrl);
                     DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
 
-                    post.Id = (int)cmd.ExecuteScalar();
+                    return post.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }

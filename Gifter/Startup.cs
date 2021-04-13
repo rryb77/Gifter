@@ -27,7 +27,9 @@ namespace Gifter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IPostRepository, AuditingPostRepository>();
+            services.AddTransient<PostRepository>();
+            services.AddTransient<AuditRepository>();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 
             services.AddControllers();
