@@ -21,15 +21,19 @@ namespace Gifter.Repositories
         {
             int postId = _postRepository.Add(post);
             DateTime submitTime = DateTime.Now;
-            string newValueString = "Id: {postId}, Title: {post.Title}, ImageUrl: {post.ImageUrl}, Caption: {post.Caption}, UserProfileId: {post.UserProfileId}, DateCreated: {submitTime}";
-            _auditRepository.Add("Post", "Insert", null, newValueString);
+            string oldValueString = null;
+            string newValueString = $"Id: {postId}, Title: {post.Title}, ImageUrl: {post.ImageUrl}, Caption: {post.Caption}, UserProfileId: {post.UserProfileId}, DateCreated: {submitTime}";
+            _auditRepository.Add("Post", "Insert", oldValueString, newValueString);
 
             return postId;
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Post post = _postRepository.GetById(id);
+            string oldValueString = $"Id: {post.Id}, Title: {post.Title}, ImageUrl: {post.ImageUrl}, Caption: {post.Caption}, UserProfileId: {post.UserProfileId}, DateCreated: {post.DateCreated}";
+            string newValueString = null;
+            _auditRepository.Add("Post", "Delete", oldValueString, newValueString);
         }
 
         public List<Post> GetAll()
@@ -59,12 +63,18 @@ namespace Gifter.Repositories
 
         public List<Post> Search(string criterion, bool sortDescending)
         {
-            throw new NotImplementedException();
+            return _postRepository.Search(criterion, sortDescending);
         }
 
         public void Update(Post post)
         {
-            throw new NotImplementedException();
+            Post oldPost = _postRepository.GetById(post.Id);
+            string oldValueString = $"Id: {oldPost.Id}, Title: {oldPost.Title}, ImageUrl: {oldPost.ImageUrl}, Caption: {oldPost.Caption}, UserProfileId: {oldPost.UserProfileId}, DateCreated: {oldPost.DateCreated}";
+            _postRepository.Update(post);
+
+            DateTime submitTime = DateTime.Now;
+            string newValueString = $"Id: {post.Id}, Title: {post.Title}, ImageUrl: {post.ImageUrl}, Caption: {post.Caption}, UserProfileId: {post.UserProfileId}, DateCreated: {submitTime}";
+            _auditRepository.Add("Post", "Update", oldValueString, newValueString);
         }
     }
 }
