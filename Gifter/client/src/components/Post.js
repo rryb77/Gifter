@@ -6,7 +6,16 @@ import { UserContext } from "../providers/UserProvider";
 
 const Post = ({ post }) => {
 
+  const {getAllPosts, deletePost} = useContext(PostContext)
   const { currentUserProfileId } = useContext(UserContext)
+
+  const deleteHandler = () => {
+    if (currentUserProfileId === post.userProfileId) {
+      if (window.confirm('Are you sure you want to delete this?')) {
+          deletePost(post.id).then(getAllPosts);
+      }
+    }
+  }
 
   if (currentUserProfileId === post.userProfileId)
   {
@@ -29,7 +38,15 @@ const Post = ({ post }) => {
           <Link to={`/posts/edit/${post.id}`}>
             <strong> Edit </strong>
           </Link>
-      </p>
+          |
+          <Link to={'/'} onClick={deleteHandler}>
+            <strong> Delete Post </strong>
+          </Link>
+        </p>
+
+        <p>
+
+        </p>
         {/* <div>
           {
             post.comments.map(comment => {

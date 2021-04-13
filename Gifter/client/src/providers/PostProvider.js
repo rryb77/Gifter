@@ -33,6 +33,12 @@ export const PostProvider = (props) => {
       
   }
 
+  const deletePost = (id) => {
+    return fetch(`/api/post/${id}`, {
+      method: "DELETE"
+    })
+  }
+
   const searchPosts = (searchTerms) => {
     return fetch(`/api/post/search?q=${searchTerms}`)
       .then((res) => res.json())
@@ -54,7 +60,7 @@ export const PostProvider = (props) => {
   }
 
   return (
-    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost, getUserPosts, updatePost }}>
+    <PostContext.Provider value={{ posts, getAllPosts, addPost, searchPosts, setSearchTerms, searchTerms, getPostsWithComments, getPost, getUserPosts, updatePost, deletePost }}>
       {props.children}
     </PostContext.Provider>
   );
