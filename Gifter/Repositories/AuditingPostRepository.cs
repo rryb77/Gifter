@@ -34,6 +34,7 @@ namespace Gifter.Repositories
             string oldValueString = $"Id: {post.Id}, Title: {post.Title}, ImageUrl: {post.ImageUrl}, Caption: {post.Caption}, UserProfileId: {post.UserProfileId}, DateCreated: {post.DateCreated}";
             string newValueString = null;
             _auditRepository.Add("Post", "Delete", oldValueString, newValueString);
+            _postRepository.Delete(id);
         }
 
         public List<Post> GetAll()
