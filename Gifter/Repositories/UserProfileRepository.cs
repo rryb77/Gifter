@@ -44,6 +44,39 @@ namespace Gifter.Repositories
             }
         }
 
+        public UserProfile GetByFirebaseUserId(string firebaseUserId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id, Up.FirebaseUserId, up.Name AS UserProfileName, up.Email
+                          FROM UserProfile up
+                         WHERE up.FirebaseUserId = @FirebaseUserId";
+
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
+
+                    UserProfile userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userProfile = new UserProfile()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                            Name = DbUtils.GetString(reader, "UserProfileName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                        };
+                    }
+                    reader.Close();
+
+                    return userProfile;
+                }
+            }
+        }
         public UserProfile GetUserProfileById(int id)
         {
             using(var conn = Connection)
@@ -183,7 +216,7 @@ namespace Gifter.Repositories
                     DbUtils.AddParameter(cmd, "@Email", profile.Email);
                     DbUtils.AddParameter(cmd, "@ImageUrl", profile.ImageUrl);
                     DbUtils.AddParameter(cmd, "@Bio", profile.Bio);
-                    DbUtils.AddParameter(cmd, "@DateCreated", profile.DateCreated);
+                    DbUtils.AddParameter(cmd, "@DateCreated", DateTime.Now);
 
                     profile.Id = (int)cmd.ExecuteScalar();
                 }

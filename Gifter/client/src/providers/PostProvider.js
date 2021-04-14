@@ -1,62 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserProfileContext } from './UserProfileProvider';
 
 export const PostContext = React.createContext();
 
 export const PostProvider = (props) => {
+ 
+  const apiUrl = "/api/post";
   const [posts, setPosts] = useState([]);
   const [ searchTerms, setSearchTerms ] = useState("");
+  const { getToken } = useContext(UserProfileContext);
 
-  const getAllPosts = () => {
-    return fetch("/api/post")
-      .then((res) => res.json())
-      .then(setPosts);
-  };
+  const getAllPosts = () => 
+    getToken().then((token) =>
+        fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(resp => resp.json())
+          .then(setPosts));
 
-  const addPost = (post) => {
-    return fetch("/api/post", {
+  const addPost = (post) =>
+    getToken().then((token) => 
+      fetch(apiUrl, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
-    });
-  };
+    }));
 
   const updatePost = (post) => {
-    return fetch(`/api/post/${post.id}`, {
+    return getToken().then((token) =>
+      fetch(`${apiUrl}/${post.id}`, {
       method: "PUT",
       headers: {
-          "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,  
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(post)
-    })
-      
+    }))      
   }
 
   const deletePost = (id) => {
-    return fetch(`/api/post/${id}`, {
-      method: "DELETE"
-    })
+    return getToken().then((token) =>
+      fetch(`${apiUrl}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    }))
   }
 
   const searchPosts = (searchTerms) => {
-    return fetch(`/api/post/search?q=${searchTerms}`)
+    return getToken().then((token) =>
+      fetch(`${apiUrl}/search?q=${searchTerms}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then((res) => res.json())
-      .then(setPosts);
+      .then(setPosts));
   }
 
   const getPostsWithComments = () => {
-    return fetch(`/api/post/GetWithComments`)
+    return getToken().then((token) =>
+      fetch(`/api/post/GetWithComments`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then((res) => res.json())
-      .then(setPosts)
+      .then(setPosts))
   }
 
   const getPost = (id) => {
-    return fetch(`/api/post/GetPostWithComments?id=${id}`).then((res) => res.json());
+    return getToken().then((token) =>
+    fetch(`/api/post/GetPostWithComments?id=${id}`, {
+      method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+    })
+    .then((res) => res.json()));
   };
 
   const getUserPosts = (id) => {
-    return fetch(`/api/UserProfile/GetByIdWithPosts?id=${id}`).then((res) => res.json())
+    return getToken().then((token) =>
+    fetch(`/api/UserProfile/GetByIdWithPosts?id=${id}`, {
+      method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+    })
+    .then((res) => res.json()));
   }
 
   return (

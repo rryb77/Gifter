@@ -10,14 +10,14 @@ import {
 } from "reactstrap";
 import { PostContext } from "../providers/PostProvider";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../providers/UserProvider";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const PostForm = () => {
   const { addPost } = useContext(PostContext);
   const [imageUrl, setImageUrl] = useState("");
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
-  const { currentUserProfileId } = useContext(UserContext)
+  const { currentUserProfileId } = useContext(UserProfileContext)
 
   // Use this hook to allow us to programatically redirect users
   const history = useHistory();

@@ -23,9 +23,8 @@ namespace Gifter.Models
 
         public List<Post> Posts { get; set; }
 
-        public static int CURRENT_USER_PROFILE_ID
-        {
-            get { return 1; }
-        }
+        [Required]
+        [StringLength(28, MinimumLength = 28)]
+        public string FirebaseUserId { get; set; }
     }
 }

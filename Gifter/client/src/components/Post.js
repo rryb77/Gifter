@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { Card, CardImg, CardBody } from "reactstrap";
 import { PostContext } from "../providers/PostProvider";
 import { Link } from "react-router-dom";
-import { UserContext } from "../providers/UserProvider";
+import { UserProfileContext } from "../providers/UserProfileProvider";
 
 const Post = ({ post }) => {
 
   const {getAllPosts, deletePost} = useContext(PostContext)
-  const { currentUserProfileId } = useContext(UserContext)
+  const { currentUserProfileId } = useContext(UserProfileContext)
 
   const deleteHandler = () => {
     if (currentUserProfileId === post.userProfileId) {
